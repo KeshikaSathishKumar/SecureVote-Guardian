@@ -142,9 +142,17 @@ Tools:      StarUML, ProjectLibre
 
 ---
 
-## 🙏 Acknowledgments
+## Local Development Tools
 
-Built for student elections, verified by cryptography.
+We use the following tools for local development:
+
+- **Python 3.12** – main language for backend and crypto.
+- **Flask** – web framework for HTTP APIs and HTML views.
+- **PostgreSQL 15** – relational database for elections, votes, and tallies.
+- **Docker Desktop** – runs containers on the developer machine.
+- **Docker Compose** – starts the Flask and PostgreSQL containers together.
+- **Git & GitHub** – version control and collaboration (GitHub Flow branching).
+- **VS Code / PyCharm** – recommended editors (optional).
 
 ---
 
