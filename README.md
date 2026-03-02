@@ -156,6 +156,49 @@ We use the following tools for local development:
 
 ---
 
+## Software Design
+
+This project follows a **layered client-server architecture** with clear separation of concerns: browser clients → Flask API → dedicated crypto engine → PostgreSQL database → Docker deployment.
+
+### Architecture Diagrams 
+
+[![High-Level Architecture](docs/design/ArchitectureDiagram.jpg)](docs/design/ArchitectureDiagram.drawio)
+> Click to view interactive version in Draw.io.
+
+**Key design decisions:**
+- Crypto logic separated into dedicated modules for testability and security.
+- Repository pattern for database access to reduce coupling.
+- Dockerized for reproducible local development and easy deployment.
+
+## 🖼 Wireframe Screenshots
+
+### 🏠 Home Page
+![Home Page Wireframe](docs/design/wireframes/HomePage.jpg)
+
+### ✅ Verification Page
+![Verification Page Wireframe](docs/design/wireframes/VerificationPage.jpg)
+
+### 🗳 Voting Page
+![Voting Page Wireframe](docs/design/wireframes/VotingPage.jpg)
+
+### 🛠 Admin Page
+![Admin Page Wireframe](docs/design/wireframes/AdminPage.jpg)
+
+### 🔐 Decryption Page
+![Decryption Page Wireframe](docs/design/wireframes/DecryptionPage.jpg)
+
+### 📊 Result Page
+![Result Page Wireframe](docs/design/wireframes/ResultPage.jpg)
+
+**Key design decisions:**
+- **Layered client-server architecture** with dedicated crypto engine separated from Flask API for testability and security.
+- **Repository pattern** for database access to reduce coupling between business logic and PostgreSQL schema.
+- **Dockerized stack** (Flask + PostgreSQL) for reproducible local development and consistent deployment environments.
+- **Mobile-first responsive UI** using CSS Grid/Flexbox for voter accessibility across desktop, tablet, and mobile browsers.
+- **Progressive disclosure** in voting flow: eligibility → token → candidate selection → encryption preview → confirmation to guide users without overwhelming them.
+
+---
+
 ⭐ **Star this repo if you find cryptographic voting interesting!**
 
 ---

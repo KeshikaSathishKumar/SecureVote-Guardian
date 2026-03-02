@@ -1,0 +1,114 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0" version="29.5.5">
+  <diagram name="High-Level Architecture" id="9YjrBSIttQffbz1BRisn">
+    <mxGraphModel dx="1477" dy="806" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-1" parent="1" style="text;html=1;fontSize=22;fontStyle=1;align=center;verticalAlign=middle;" value="SecureVote Guardian - High-Level Architecture" vertex="1">
+          <mxGeometry height="40" width="800" x="400" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-2" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;" value="Clients" vertex="1">
+          <mxGeometry height="30" width="120" x="40" y="95" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-3" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;" value="Frontend (Presentation Layer)" vertex="1">
+          <mxGeometry height="30" width="260" x="40" y="205" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-4" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;" value="Backend (Application Layer)" vertex="1">
+          <mxGeometry height="30" width="260" x="40" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-5" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;" value="Data &amp; Crypto Layer" vertex="1">
+          <mxGeometry height="30" width="260" x="40" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-6" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;" value="Deployment / Infrastructure" vertex="1">
+          <mxGeometry height="30" width="260" x="40" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-7" parent="1" style="swimlane;collapsible=0;rounded=1;strokeColor=#5f6368;fillColor=#f5f5f5;" value="" vertex="1">
+          <mxGeometry height="120" width="330" x="160" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-8" parent="MP6J9TxB2W7SKgLkHBhG-7" style="shape=mxgraph.basic.user;html=1;whiteSpace=wrap;strokeColor=#1a73e8;fillColor=#ffffff;fontSize=12;" value="Voter Browser&#xa;(Vote, see confirmation)" vertex="1">
+          <mxGeometry height="60" width="130" x="30" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-9" parent="MP6J9TxB2W7SKgLkHBhG-7" style="shape=mxgraph.basic.user;html=1;whiteSpace=wrap;strokeColor=#1a73e8;fillColor=#ffffff;fontSize=12;" value="Admin Browser&#xa;(Manage elections)" vertex="1">
+          <mxGeometry height="60" width="130" x="190" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-10" parent="1" style="swimlane;collapsible=0;rounded=1;strokeColor=#1a73e8;fillColor=#e8f0fe;" value="" vertex="1">
+          <mxGeometry height="120" width="1300" x="150" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-11" parent="MP6J9TxB2W7SKgLkHBhG-10" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#1a73e8;fillColor=#ffffff;fontSize=12;" value="Web Frontend&#xa;- HTML/CSS/JS&#xa;- Client-side Paillier encryption&#xa;- Forms for voter/admin/trustee" vertex="1">
+          <mxGeometry height="80" width="260" x="520" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-12" parent="1" style="swimlane;collapsible=0;rounded=1;strokeColor=#ea4335;fillColor=#feecec;" value="" vertex="1">
+          <mxGeometry height="150" width="1300" x="150" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-13" parent="MP6J9TxB2W7SKgLkHBhG-12" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#ea4335;fillColor=#ffffff;fontSize=12;" value="Nginx Reverse Proxy&#xa;- HTTPS termination&#xa;- Routing / Rate limiting" vertex="1">
+          <mxGeometry height="80" width="260" x="350" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-14" parent="MP6J9TxB2W7SKgLkHBhG-12" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#ea4335;fillColor=#ffffff;fontSize=12;" value="Flask Application API&#xa;- /create_election&#xa;- /request_token&#xa;- /submit_vote&#xa;- /compute_tally&#xa;- /partial_decrypt" vertex="1">
+          <mxGeometry height="100" width="320" x="640" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-15" parent="1" style="swimlane;collapsible=0;rounded=1;strokeColor=#fbbc04;fillColor=#fff8e1;" value="" vertex="1">
+          <mxGeometry height="150" width="1300" x="150" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-16" parent="MP6J9TxB2W7SKgLkHBhG-15" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#34a853;fillColor=#e6f4ea;fontSize=12;" value="Crypto Engine&#xa;- Paillier keygen/encrypt/decrypt&#xa;- Homomorphic tally&#xa;- Threshold key shares &amp; reconstruction" vertex="1">
+          <mxGeometry height="80" width="340" x="320" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-17" parent="MP6J9TxB2W7SKgLkHBhG-15" style="shape=cylinder3;whiteSpace=wrap;html=1;strokeColor=#fbbc04;fillColor=#ffffff;fontSize=12;" value="PostgreSQL Database&#xa;- elections&#xa;- eligibility&#xa;- tokens&#xa;- votes (ciphertext)&#xa;- tallies&#xa;- trustees" vertex="1">
+          <mxGeometry height="100" width="260" x="720" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-18" parent="1" style="swimlane;collapsible=0;rounded=1;strokeColor=#5f6368;fillColor=#eceff1;" value="" vertex="1">
+          <mxGeometry height="130" width="1300" x="150" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-19" parent="MP6J9TxB2W7SKgLkHBhG-18" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#5f6368;fillColor=#ffffff;fontSize=12;" value="Docker &amp; Docker Compose&#xa;- web (Flask + Nginx + Crypto)&#xa;- db (PostgreSQL)" vertex="1">
+          <mxGeometry height="80" width="260" x="360" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-20" parent="MP6J9TxB2W7SKgLkHBhG-18" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#5f6368;fillColor=#ffffff;fontSize=12;" value="Cloud / Server Environment&#xa;- AWS EC2 or VM&#xa;- Security groups&#xa;- HTTPS termination" vertex="1">
+          <mxGeometry height="80" width="260" x="680" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-21" parent="1" style="swimlane;collapsible=0;fontStyle=1;rounded=1;strokeColor=#9e9e9e;fillColor=#fafafa;arcSize=0;" value="Legend" vertex="1">
+          <mxGeometry height="150" width="220" x="1080" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-22" parent="MP6J9TxB2W7SKgLkHBhG-21" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" value="Blue: Frontend / Clients" vertex="1">
+          <mxGeometry height="20" width="200" x="10" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-23" parent="MP6J9TxB2W7SKgLkHBhG-21" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" value="Red: Backend / API" vertex="1">
+          <mxGeometry height="20" width="200" x="10" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-24" parent="MP6J9TxB2W7SKgLkHBhG-21" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" value="Yellow: Data Layer" vertex="1">
+          <mxGeometry height="20" width="200" x="10" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-25" parent="MP6J9TxB2W7SKgLkHBhG-21" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" value="Green: Crypto Engine" vertex="1">
+          <mxGeometry height="20" width="200" x="10" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-26" parent="MP6J9TxB2W7SKgLkHBhG-21" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;" value="Grey: Infra / Deployment" vertex="1">
+          <mxGeometry height="20" width="200" x="10" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-27" edge="1" parent="1" source="MP6J9TxB2W7SKgLkHBhG-8" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#1a73e8;" target="MP6J9TxB2W7SKgLkHBhG-11" value="HTTP/HTTPS&#xa;UI interaction">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-28" edge="1" parent="1" source="MP6J9TxB2W7SKgLkHBhG-9" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#1a73e8;" target="MP6J9TxB2W7SKgLkHBhG-11" value="HTTP/HTTPS">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-29" edge="1" parent="1" source="MP6J9TxB2W7SKgLkHBhG-11" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#ea4335;" target="MP6J9TxB2W7SKgLkHBhG-13" value="HTTPS&#xa;API calls">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-30" edge="1" parent="1" source="MP6J9TxB2W7SKgLkHBhG-13" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#ea4335;" target="MP6J9TxB2W7SKgLkHBhG-14" value="HTTP&#xa;reverse proxy">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-31" edge="1" parent="1" source="MP6J9TxB2W7SKgLkHBhG-14" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#34a853;dashed=1;dashPattern=8 8;" target="MP6J9TxB2W7SKgLkHBhG-16" value="Function calls">
+          <mxGeometry relative="1" x="-0.093" y="-2" as="geometry">
+            <mxPoint x="1" as="offset" />
+            <Array as="points">
+              <mxPoint x="790" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-32" edge="1" parent="1" source="MP6J9TxB2W7SKgLkHBhG-14" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#fbbc04;" target="MP6J9TxB2W7SKgLkHBhG-17" value="SQL queries">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MP6J9TxB2W7SKgLkHBhG-33" edge="1" parent="1" source="MP6J9TxB2W7SKgLkHBhG-19" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#5f6368;dashed=1;dashPattern=8 8;" target="MP6J9TxB2W7SKgLkHBhG-20" value="Deployed on">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
