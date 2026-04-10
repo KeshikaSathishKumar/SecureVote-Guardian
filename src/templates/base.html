@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}SecureVote Guardian{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+</head>
+<body>
+<nav class="navbar">
+  <a class="brand" href="/">🗳️ SecureVote Guardian</a>
+  <div class="nav-links">
+    <a href="/elections">Elections</a>
+    <a href="/results">Results</a>
+    <a href="/about">About</a>
+    {% if current_user %}
+      {% if current_user.role == 'admin' %}<a href="/admin">Admin</a>{% endif %}
+      {% if current_user.role == 'trustee' %}<a href="/trustee">Trustee</a>{% endif %}
+      <a href="/profile">👤 {{ current_user.username }}</a>
+      <a href="/logout" class="btn-sm">Logout</a>
+    {% else %}
+      <a href="/login" class="btn-sm">Login</a>
+      <a href="/register" class="btn-sm btn-outline">Register</a>
+    {% endif %}
+  </div>
+</nav>
+
+{% with msgs = get_flashed_messages(with_categories=true) %}
+  {% for cat,msg in msgs %}
+    <div class="alert alert-{{ cat }}">{{ msg }}</div>
+  {% endfor %}
+{% endwith %}
+
+<main class="container">
+  {% block content %}{% endblock %}
+</main>
+
+<footer>
+  <p>SecureVote Guardian — Privacy-preserving elections with Paillier HE + Shamir Secret Sharing</p>
+</footer>
+<script src="{{ url_for('static',filename='js/vote.js') }}"></script>
+</body>
+</html>

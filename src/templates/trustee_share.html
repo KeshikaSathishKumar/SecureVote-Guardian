@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Your Key Share — {{ election.name }}{% endblock %}
+{% block content %}
+<h1>🔑 Your Key Share</h1>
+<h2>{{ election.name }}</h2>
+
+<div class="highlight-box">
+  <p>⚠️ <strong>IMPORTANT — Read carefully:</strong></p>
+  <ul>
+    <li>This is <strong>your portion</strong> of the election's private decryption key.</li>
+    <li>The full key was split using <strong>Shamir's Secret Sharing</strong>.</li>
+    <li>Results <strong>cannot be decrypted</strong> without {{ election.threshold }} trustees providing their shares.</li>
+    <li><strong>Do not share this with anyone</strong>, especially not the admin.</li>
+    <li>Store it securely (write it down offline if needed).</li>
+  </ul>
+</div>
+
+<div class="receipt-box">
+  <div class="receipt-detail">
+    <div>
+      <strong>Share Index (x):</strong>
+      <code>{{ share.share_x }}</code>
+    </div>
+    <div>
+      <strong>Share Value (y):</strong>
+      <code>{{ share.share_y_hex }}</code>
+    </div>
+    <div>
+      <strong>Election ID:</strong> {{ election.id }}
+    </div>
+  </div>
+</div>
+
+<div class="info-box">
+  When the election closes, come back here and go to <strong>"Submit Share to Unlock Tally"</strong>.
+  You will submit this share so the system can reconstruct the private key and compute results.
+  The admin cannot do this without you.
+</div>
+
+<a href="/trustee" class="btn btn-outline">← Trustee Dashboard</a>
+{% endblock %}

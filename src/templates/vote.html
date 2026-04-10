@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Vote — {{ election.name }}{% endblock %}
+{% block content %}
+<h1>🗳️ Cast Your Vote</h1>
+<div class="election-banner">
+  <strong>{{ election.name }}</strong>
+  <span class="badge badge-ongoing">Ongoing</span>
+</div>
+<div class="info-box">
+  🔒 Your vote will be encrypted in your browser using Paillier homomorphic encryption.
+  The server never sees your choice in plaintext.
+</div>
+
+<form id="vote-form" method="post">
+  <h2>Select a Candidate</h2>
+  <div class="candidate-grid">
+    {% for c in candidates %}
+    <label class="candidate-card selectable">
+      <input type="radio" name="candidate_id" value="{{ c.id }}"
+             data-position="{{ c.position }}" required>
+      <div class="cand-symbol">{{ c.symbol }}</div>
+      <h3>{{ c.name }}</h3>
+      <p>{{ c.manifesto or '' }}</p>
+    </label>
+    {% endfor %}
+  </div>
+
+  <input type="hidden" name="ciphertext_hex" id="ciphertext_hex">
+
+  {% if pk_json %}
+  <button type="button" class="btn btn-outline" onclick="encryptVote('{{ pk_json | tojson }}')">
+    🔐 Encrypt &amp; Preview
+  </button>
+  <div id="encrypt-preview" class="encrypt-preview" style="display:none">
+    <strong>Encrypted vote (ciphertext):</strong>
+    <code id="ct-preview"></code>
+    <p class="hint">This random-looking number encodes your choice. The server only stores this.</p>
+  </div>
+  {% endif %}
+
+  <button type="submit" class="btn" id="submit-btn">Submit Vote</button>
+</form>
+
+<script>
+const PK = {{ pk_json | safe if pk_json else 'null' }};
+
+function bigintFromHex(h){ return BigInt(h); }
+
+function encryptPaillier(pk, m){
+  const n = bigintFromHex(pk.n);
+  const g = bigintFromHex(pk.g);
+  const n_sq = bigintFromHex(pk.n_sq);
+  // generate random r in (1, n)
+  const rbytes = new Uint8Array(Math.ceil(pk.bits/8));
+  crypto.getRandomValues(rbytes);
+  let r = 0n;
+  for(const b of rbytes) r = (r << 8n) | BigInt(b);
+  r = (r % (n - 2n)) + 2n;
+  const gm = modpow(g, BigInt(m), n_sq);
+  const rn = modpow(r, n, n_sq);
+  return (gm * rn) % n_sq;
+}
+
+function modpow(base, exp, mod){
+  let result = 1n; base = base % mod;
+  while(exp > 0n){
+    if(exp % 2n === 1n) result = result * base % mod;
+    exp = exp >> 1n; base = base * base % mod;
+  }
+  return result;
+}
+
+function encryptVote(pkJson){
+  const pk = JSON.parse(pkJson);
+  const sel = document.querySelector('input[name="candidate_id"]:checked');
+  if(!sel){ alert('Please select a candidate first.'); return; }
+  const pos = parseInt(sel.dataset.position);
+  const ct = encryptPaillier(pk, pos);
+  const ctHex = '0x' + ct.toString(16);
+  document.getElementById('ciphertext_hex').value = ctHex;
+  document.getElementById('ct-preview').textContent = ctHex.substring(0,80) + '...';
+  document.getElementById('encrypt-preview').style.display = 'block';
+}
+
+// Auto-encrypt on submit if not already done
+document.getElementById('vote-form').addEventListener('submit', function(e){
+  if(PK && !document.getElementById('ciphertext_hex').value){
+    e.preventDefault();
+    encryptVote(JSON.stringify(PK));
+    setTimeout(()=>this.submit(), 100);
+  }
+});
+</script>
+{% endblock %}

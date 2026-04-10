@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}New Election{% endblock %}
+{% block content %}
+<h1>➕ Create New Election</h1>
+<form method="post" id="elec-form">
+  <div class="form-grid">
+    <label>Election Name<input type="text" name="name" required placeholder="e.g. Student Council 2025"></label>
+    <label>Category
+      <select name="category">
+        <option>General</option><option>College</option><option>Club</option>
+      </select>
+    </label>
+    <label>Description<textarea name="description" rows="3"></textarea></label>
+    <label>Start Time<input type="datetime-local" name="start_time" required></label>
+    <label>End Time<input type="datetime-local" name="end_time" required></label>
+    <label>Threshold (min trustees to decrypt)<input type="number" name="threshold" value="2" min="1" max="5"></label>
+    <label>Number of Trustees<input type="number" name="n_trustees" value="3" min="2" max="5"></label>
+  </div>
+
+  <h2>Candidates</h2>
+  <div id="candidates">
+    {% for i in range(2) %}
+    <div class="candidate-row">
+      <input type="text" name="candidate_name[]" placeholder="Candidate name" required>
+      <input type="text" name="candidate_symbol[]" placeholder="🏛️" maxlength="4">
+      <input type="text" name="candidate_manifesto[]" placeholder="Short manifesto">
+    </div>
+    {% endfor %}
+  </div>
+  <button type="button" class="btn-sm" onclick="addCandidate()">+ Add Candidate</button>
+
+  <h2>Assign Trustees</h2>
+  {% if trustees %}
+  {% for t in trustees %}
+  <label class="inline-check">
+    <input type="checkbox" name="trustees" value="{{ t.id }}"> {{ t.username }} ({{ t.email }})
+  </label>
+  {% endfor %}
+  {% else %}
+  <p class="hint">No trustees registered yet. <a href="/register">Register trustees</a> first.</p>
+  {% endif %}
+
+  <div class="info-box">
+    🔐 Clicking "Create Election" will generate a Paillier keypair and split the private key
+    across selected trustees using Shamir's Secret Sharing.
+    <strong>This may take a few seconds.</strong>
+  </div>
+  <button type="submit" class="btn">Create Election &amp; Generate Keys</button>
+</form>
+
+<script>
+function addCandidate(){
+  const div=document.createElement('div'); div.className='candidate-row';
+  div.innerHTML='<input type="text" name="candidate_name[]" placeholder="Candidate name" required>'+
+    '<input type="text" name="candidate_symbol[]" placeholder="🏛️" maxlength="4">'+
+    '<input type="text" name="candidate_manifesto[]" placeholder="Short manifesto">';
+  document.getElementById('candidates').appendChild(div);
+}
+</script>
+{% endblock %}

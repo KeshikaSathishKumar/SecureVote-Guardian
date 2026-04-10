@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Audit — {{ election.name }}{% endblock %}
+{% block content %}
+<h1>🔍 Audit Trail: {{ election.name }}</h1>
+<p>This page allows anyone to independently verify the integrity of this election.</p>
+
+<h2>Ciphertext Bulletin Board</h2>
+<p>All encrypted votes — in the order received. Anyone can verify the homomorphic sum.</p>
+<table class="data-table">
+  <thead><tr><th>#</th><th>Receipt Hash</th><th>Ciphertext (truncated)</th><th>Timestamp</th></tr></thead>
+  <tbody>
+  {% for v in votes %}
+  <tr>
+    <td>{{ loop.index }}</td>
+    <td><code class="small">{{ v.receipt }}</code></td>
+    <td><code class="small">{{ v.ciphertext[:40] }}...</code></td>
+    <td>{{ v.timestamp | fmtdate('%Y-%m-%d %H:%M:%S') }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<h2>System Audit Log</h2>
+<table class="data-table">
+  <thead><tr><th>Event</th><th>Action Hash</th><th>Timestamp</th></tr></thead>
+  <tbody>
+  {% for log in logs %}
+  <tr>
+    <td><span class="badge badge-info">{{ log.event_type }}</span></td>
+    <td><code class="small">{{ log.action_hash[:32] }}…</code></td>
+    <td>{{ log.timestamp | fmtdate('%Y-%m-%d %H:%M:%S') }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<div class="info-box">
+  <strong>How to verify your vote:</strong> Your receipt hash should appear in the bulletin board above.
+  Each row's hash was computed as SHA-256(voter_id:election_id:ciphertext).
+</div>
+{% endblock %}

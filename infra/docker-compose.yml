@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: ..          # build context is project root
+      dockerfile: infra/Dockerfile
+    container_name: securevote
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_DEBUG=false
+      - SECRET_KEY=change-this-to-a-long-random-string-in-production
+      - FLASK_HOST=0.0.0.0
+      - FLASK_PORT=5000
+    volumes:
+      # Persist the SQLite database outside the container
+      - securevote_data:/app/securevote.db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  securevote_data:

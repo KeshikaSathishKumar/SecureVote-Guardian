@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Elections{% endblock %}
+{% block content %}
+<h1>Elections</h1>
+<form class="filter-bar" method="get">
+  <label>Status:
+    <select name="status" onchange="this.form.submit()">
+      <option value="all" {% if sf=='all' %}selected{% endif %}>All</option>
+      <option value="ongoing" {% if sf=='ongoing' %}selected{% endif %}>Active</option>
+      <option value="upcoming" {% if sf=='upcoming' %}selected{% endif %}>Upcoming</option>
+      <option value="completed" {% if sf=='completed' %}selected{% endif %}>Completed</option>
+    </select>
+  </label>
+  <label>Category:
+    <select name="category" onchange="this.form.submit()">
+      <option value="all" {% if cf=='all' %}selected{% endif %}>All</option>
+      <option value="General">General</option>
+      <option value="College">College</option>
+      <option value="Club">Club</option>
+    </select>
+  </label>
+</form>
+{% if elections %}
+<table class="data-table">
+  <thead><tr><th>Name</th><th>Category</th><th>Start</th><th>End</th><th>Status</th><th>Actions</th></tr></thead>
+  <tbody>
+  {% for e in elections %}
+  <tr>
+    <td><strong>{{ e.name }}</strong></td>
+    <td>{{ e.category }}</td>
+    <td>{{ e.start_time | fmtdate }}</td>
+    <td>{{ e.end_time | fmtdate }}</td>
+    <td><span class="badge badge-{{ e.status }}">{{ e.status }}</span></td>
+    <td>
+      <a href="/elections/{{ e.id }}" class="btn-sm">View</a>
+      {% if current_user and current_user.role=='voter' and e.status=='ongoing' %}
+        <a href="/vote/{{ e.id }}" class="btn-sm btn-green">Vote</a>
+      {% endif %}
+      {% if current_user and current_user.role=='admin' %}
+        <a href="/admin/elections/{{ e.id }}" class="btn-sm btn-outline">Manage</a>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No elections found.</p>
+{% endif %}
+{% endblock %}

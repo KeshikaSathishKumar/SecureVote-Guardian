@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}About — SecureVote Guardian{% endblock %}
+{% block content %}
+<h1>About SecureVote Guardian</h1>
+
+<section class="about-section">
+  <h2>The Problem</h2>
+  <p>Traditional online voting systems have a fatal flaw: the server operator can see every vote. A compromised or malicious admin can alter results, and there is no way for voters to verify their vote was counted correctly without exposing their choice.</p>
+</section>
+
+<section class="about-section">
+  <h2>Our Solution</h2>
+  <p>SecureVote Guardian uses <strong>client-side encryption</strong> so the server never sees plaintext votes. A <strong>threshold decryption scheme</strong> means no single person can unilaterally decrypt results. Every action is logged in a <strong>tamper-evident audit trail</strong>.</p>
+</section>
+
+<section class="about-section highlight-box">
+  <h2>🔐 Cryptographic Method</h2>
+  <p><strong>Custom Threshold Paillier Homomorphic Encryption + Shamir's Secret Sharing</strong></p>
+  <ul>
+    <li>The server can <em>add</em> encrypted votes together without ever decrypting them (homomorphic addition).</li>
+    <li>The private decryption key is split across <em>n</em> trustees using Shamir's Secret Sharing.</li>
+    <li>A minimum quorum (<em>threshold</em>) of trustees must cooperate to reconstruct the key and reveal results.</li>
+    <li>Voters receive a cryptographic receipt to verify their vote was included.</li>
+  </ul>
+</section>
+
+<section class="about-section">
+  <h2>Security Guarantees</h2>
+  <div class="card-grid">
+    <div class="card">🛡️ <strong>Privacy</strong> — Individual votes never revealed</div>
+    <div class="card">✅ <strong>Integrity</strong> — Encrypted votes cannot be altered</div>
+    <div class="card">🔍 <strong>Verifiability</strong> — Receipts + audit log</div>
+    <div class="card">🔑 <strong>No single point</strong> — Threshold key splitting</div>
+  </div>
+</section>
+
+<section class="about-section">
+  <h2>Technical Stack</h2>
+  <ul>
+    <li><strong>Backend:</strong> Python 3 + Flask + SQLAlchemy (SQLite)</li>
+    <li><strong>Crypto:</strong> Pure Python Paillier HE + Shamir Secret Sharing (no external libs)</li>
+    <li><strong>Frontend:</strong> Vanilla HTML/CSS/JS with BigInt for client-side encryption</li>
+  </ul>
+</section>
+{% endblock %}

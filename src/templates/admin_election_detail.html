@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Manage: {{ election.name }}{% endblock %}
+{% block content %}
+<h1>⚙️ Manage: {{ election.name }}</h1>
+<span class="badge badge-{{ election.status }}">{{ election.status }}</span>
+
+<div class="stat-grid">
+  <div class="stat-card"><span class="stat-num">{{ vote_count }}</span><span>Votes Cast</span></div>
+  <div class="stat-card"><span class="stat-num">{{ election.threshold }}/{{ election.n_trustees }}</span><span>Threshold</span></div>
+  <div class="stat-card"><span class="stat-num">{{ submissions|length }}/{{ election.threshold }}</span><span>Shares Submitted</span></div>
+</div>
+
+<!-- Admin action buttons -->
+<div class="admin-controls">
+  {% if election.status == 'upcoming' %}
+    <form method="post" action="/admin/elections/{{ election.id }}/open" style="display:inline">
+      <button class="btn btn-green">▶️ Open Voting</button>
+    </form>
+
+  {% elif election.status == 'ongoing' %}
+    <form method="post" action="/admin/elections/{{ election.id }}/close" style="display:inline">
+      <button class="btn btn-outline">⏹️ Close Voting</button>
+    </form>
+
+  {% elif election.status == 'counting' %}
+    {% if submissions|length >= election.threshold %}
+      <form method="post" action="/admin/tally/{{ election.id }}">
+        <button class="btn btn-green">🔢 Compute Final Tally</button>
+      </form>
+    {% else %}
+      <div class="highlight-box">
+        🔒 <strong>Waiting for trustees to submit their key shares.</strong><br>
+        The tally is locked until <strong>{{ election.threshold }}</strong> trustees submit.
+        Currently: <strong>{{ submissions|length }} / {{ election.threshold }}</strong> submitted.<br>
+        <small>Ask the assigned trustees to log in and go to their Trustee Dashboard to submit.</small>
+      </div>
+    {% endif %}
+
+  {% elif election.status == 'completed' %}
+    <a href="/results/{{ election.id }}" class="btn">📊 View Results</a>
+  {% endif %}
+</div>
+
+<!-- Trustee key share status -->
+<div class="section">
+  <h2>🔑 Trustee Key Share Status</h2>
+  <p class="hint">
+    The private key was split into {{ election.n_trustees }} shares using Shamir's Secret Sharing.
+    Any {{ election.threshold }} trustees must submit their share to unlock the tally.
+    <strong>You (admin) cannot compute the tally alone.</strong>
+  </p>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Trustee</th>
+        <th>Share Acknowledged</th>
+        <th>Share Submitted for Tally</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for t in trustees %}
+      {% set share = shares|selectattr('trustee_id','eq',t.id)|first %}
+      <tr>
+        <td>{{ t.username }}</td>
+        <td>
+          {% if share and share.acknowledged %}✅ Yes{% else %}⏳ Not yet{% endif %}
+        </td>
+        <td>
+          {% if t.id in submitted_trustee_ids %}
+            <span class="badge badge-completed">✅ Submitted</span>
+          {% elif election.status == 'counting' %}
+            <span class="badge badge-upcoming">⏳ Awaiting submission</span>
+          {% else %}
+            <span class="hint">—</span>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if result %}
+<div class="section">
+  <h2>✅ Results Published</h2>
+  <a href="/results/{{ election.id }}" class="btn">View Results</a>
+</div>
+{% endif %}
+
+<a href="/audit/{{ election.id }}" class="btn btn-outline">🔍 Audit Trail</a>
+<a href="/admin" class="btn btn-outline">← Dashboard</a>
+{% endblock %}

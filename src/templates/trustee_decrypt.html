@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Partial Decryption{% endblock %}
+{% block content %}
+<h1>🔓 Partial Decryption</h1>
+<h2>{{ election.name }}</h2>
+<div class="info-box">
+  The election has closed. As a trustee, you can now submit your key share so the tally can be computed.
+  The admin will reconstruct the private key from all shares and decrypt the aggregate.
+</div>
+<p><strong>Trustees who have submitted:</strong> {{ total }}</p>
+<form method="post">
+  <p>Your share is already stored securely on the server for this demo. In a production system, you would enter your share value here.</p>
+  <button type="submit" class="btn">✅ Confirm Participation</button>
+</form>
+<a href="/trustee" class="btn btn-outline">← Back</a>
+{% endblock %}

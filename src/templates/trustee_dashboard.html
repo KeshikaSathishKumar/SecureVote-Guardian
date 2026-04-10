@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Trustee Dashboard{% endblock %}
+{% block content %}
+<h1>🔑 Trustee Dashboard</h1>
+
+<div class="info-box">
+  <strong>Your role:</strong> You hold one share of the private decryption key for each assigned election.
+  The election result <strong>cannot be decrypted</strong> unless enough trustees (the threshold) submit their shares.
+  Not even the admin can compute results without you.
+</div>
+
+{% if elections %}
+<table class="data-table">
+  <thead>
+    <tr><th>Election</th><th>Status</th><th>Your Action</th></tr>
+  </thead>
+  <tbody>
+  {% for e in elections %}
+  <tr>
+    <td><strong>{{ e.name }}</strong></td>
+    <td><span class="badge badge-{{ e.status }}">{{ e.status }}</span></td>
+    <td>
+      <a href="/trustee/share/{{ e.id }}" class="btn-sm btn-outline">🔐 View My Share</a>
+
+      {% if e.status in ('counting',) %}
+        {% if e.id in submitted_eids %}
+          <span class="badge badge-completed">✅ Share Submitted</span>
+        {% else %}
+          <a href="/trustee/submit/{{ e.id }}" class="btn-sm btn-green">
+            ⬆️ Submit Share to Unlock Tally
+          </a>
+        {% endif %}
+
+      {% elif e.status == 'ongoing' %}
+        <span class="hint">Voting in progress — submit your share after admin closes the election.</span>
+
+      {% elif e.status == 'completed' %}
+        <span class="badge badge-completed">✅ Election Complete</span>
+        <a href="/results/{{ e.id }}" class="btn-sm">View Results</a>
+
+      {% else %}
+        <span class="hint">Waiting for election to open.</span>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No elections assigned to you yet. Ask the admin to assign you as a trustee when creating an election.</p>
+{% endif %}
+{% endblock %}

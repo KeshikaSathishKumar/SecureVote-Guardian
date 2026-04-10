@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<h1>👤 Profile: {{ user.username }}</h1>
+<div class="meta-grid">
+  <div><strong>Email:</strong> {{ user.email }}</div>
+  <div><strong>Role:</strong> <span class="badge badge-info">{{ user.role }}</span></div>
+  <div><strong>Account Status:</strong> {% if user.approved %}✅ Approved{% else %}⏳ Pending{% endif %}</div>
+  <div><strong>Member since:</strong> {{ user.created_at | fmtdate('%Y-%m-%d') }}</div>
+</div>
+
+{% if votes %}
+<h2>Your Voting History</h2>
+<table class="data-table">
+  <thead><tr><th>Election</th><th>Voted At</th><th>Receipt</th></tr></thead>
+  <tbody>
+  {% for v in votes %}
+  <tr>
+    <td>{{ elections[v.election_id].name if v.election_id in elections else 'Unknown' }}</td>
+    <td>{{ v.timestamp | fmtdate }}</td>
+    <td><a href="/receipt/{{ v.election_id }}">View Receipt</a></td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="hint">You haven't voted in any elections yet.</p>
+{% endif %}
+{% endblock %}

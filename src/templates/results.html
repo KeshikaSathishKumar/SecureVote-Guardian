@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Results{% endblock %}
+{% block content %}
+<h1>📊 Election Results</h1>
+{% if elections %}
+<div class="card-grid">
+{% for e in elections %}
+<div class="card">
+  <h3>{{ e.name }}</h3>
+  <span class="badge badge-{{ e.status }}">{{ e.status }}</span>
+  {% if e.id in results_map %}
+    <p><strong>Final Tally:</strong></p>
+    {% for cand in candidates_map[e.id] %}
+      <div class="tally-row">
+        <span>{{ cand.symbol }} {{ cand.name }}</span>
+        <span class="tally-count">{{ results_map[e.id].get(cand.id|string, 0) }} votes</span>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="hint">Tally in progress…</p>
+  {% endif %}
+  <a href="/results/{{ e.id }}" class="btn-sm">Details</a>
+</div>
+{% endfor %}
+</div>
+{% else %}
+<p class="empty">No completed elections yet.</p>
+{% endif %}
+{% endblock %}

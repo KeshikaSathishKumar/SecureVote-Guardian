@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Your Receipt{% endblock %}
+{% block content %}
+<div class="receipt-box">
+  <h1>✅ Vote Receipt</h1>
+  <p>Your encrypted vote for <strong>{{ election.name }}</strong> has been recorded.</p>
+  <div class="receipt-detail">
+    <div><strong>Receipt Hash:</strong><br><code>{{ vote.receipt }}</code></div>
+    <div><strong>Ciphertext (truncated):</strong><br><code>{{ vote.ciphertext[:80] }}...</code></div>
+    <div><strong>Timestamp:</strong> {{ vote.timestamp | fmtdate('%Y-%m-%d %H:%M:%S') }}</div>
+  </div>
+  <div class="info-box">
+    To verify your vote is included: go to the <a href="/audit/{{ election.id }}">Public Audit Trail</a>
+    and find your receipt hash in the list.
+  </div>
+  <a href="/audit/{{ election.id }}" class="btn btn-outline">View Audit Trail</a>
+  <a href="/elections" class="btn">Back to Elections</a>
+</div>
+{% endblock %}

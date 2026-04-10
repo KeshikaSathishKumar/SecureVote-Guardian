@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{{ election.name }}{% endblock %}
+{% block content %}
+<div class="breadcrumb"><a href="/">Home</a> → <a href="/elections">Elections</a> → {{ election.name }}</div>
+<h1>{{ election.name }}</h1>
+<span class="badge badge-{{ election.status }}">{{ election.status }}</span>
+<p>{{ election.description }}</p>
+<div class="meta-grid">
+  <div><strong>Start:</strong> {{ election.start_time | fmtdate }}</div>
+  <div><strong>End:</strong> {{ election.end_time | fmtdate }}</div>
+  <div><strong>Category:</strong> {{ election.category }}</div>
+  <div><strong>Threshold:</strong> {{ election.threshold }}-of-{{ election.n_trustees }} trustees</div>
+</div>
+
+<h2>Candidates</h2>
+<div class="candidate-grid">
+{% for c in candidates %}
+<div class="candidate-card">
+  <div class="cand-symbol">{{ c.symbol }}</div>
+  <h3>{{ c.name }}</h3>
+  <p>{{ c.manifesto or 'No manifesto provided.' }}</p>
+</div>
+{% endfor %}
+</div>
+
+{% if current_user and current_user.role=='voter' %}
+  <div class="voter-banner">
+    {% if already_voted %}
+      <p>✅ You have already voted in this election. <a href="/receipt/{{ election.id }}">View Receipt</a></p>
+    {% elif election.status == 'ongoing' %}
+      <p>You can cast your vote now!</p>
+      <a href="/vote/{{ election.id }}" class="btn">Go to Vote →</a>
+    {% else %}
+      <p>Voting is not currently open.</p>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% if current_user and current_user.role=='admin' %}
+  <div class="admin-controls">
+    <h3>Admin Controls</h3>
+    <a href="/admin/elections/{{ election.id }}" class="btn btn-outline">Manage Election</a>
+  </div>
+{% endif %}
+
+{% if election.status in ('completed',) %}
+  <a href="/results/{{ election.id }}" class="btn">View Results</a>
+{% endif %}
+<a href="/audit/{{ election.id }}" class="btn btn-outline">Audit Trail</a>
+{% endblock %}

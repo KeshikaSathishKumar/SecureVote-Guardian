@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h1>⚙️ Admin Dashboard</h1>
+<div class="stat-grid">
+  <div class="stat-card"><span class="stat-num">{{ elections|length }}</span><span>Total Elections</span></div>
+  <div class="stat-card"><span class="stat-num">{{ elections|selectattr('status','eq','ongoing')|list|length }}</span><span>Active</span></div>
+  <div class="stat-card"><span class="stat-num">{{ voters|length }}</span><span>Voters</span></div>
+  <div class="stat-card"><span class="stat-num">{{ votes_today }}</span><span>Votes Today</span></div>
+</div>
+
+{% if pending %}
+<div class="section">
+  <h2>⏳ Pending Approvals ({{ pending|length }})</h2>
+  <table class="data-table">
+    <thead><tr><th>Username</th><th>Email</th><th>Role</th><th>Action</th></tr></thead>
+    <tbody>
+    {% for u in pending %}
+    <tr>
+      <td>{{ u.username }}</td><td>{{ u.email }}</td><td>{{ u.role }}</td>
+      <td><form method="post" action="/admin/approve/{{ u.id }}"><button class="btn-sm btn-green">Approve</button></form></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+<div class="section">
+  <h2>📋 Elections <a href="/admin/elections/new" class="btn-sm">+ New Election</a></h2>
+  <table class="data-table">
+    <thead><tr><th>Name</th><th>Status</th><th>Votes</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for e in elections %}
+    <tr>
+      <td>{{ e.name }}</td>
+      <td><span class="badge badge-{{ e.status }}">{{ e.status }}</span></td>
+      <td>{{ e.votes|length }}</td>
+      <td><a href="/admin/elections/{{ e.id }}" class="btn-sm">Manage</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2>👥 Voters</h2>
+  <table class="data-table">
+    <thead><tr><th>Username</th><th>Email</th><th>Approved</th></tr></thead>
+    <tbody>
+    {% for u in voters %}
+    <tr>
+      <td>{{ u.username }}</td><td>{{ u.email }}</td>
+      <td>{% if u.approved %}✅{% else %}❌{% endif %}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

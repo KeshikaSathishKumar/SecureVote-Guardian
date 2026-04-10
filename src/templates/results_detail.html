@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Results — {{ election.name }}{% endblock %}
+{% block content %}
+<h1>Results: {{ election.name }}</h1>
+{% if result %}
+<table class="data-table">
+  <thead><tr><th>Candidate</th><th>Votes</th><th>Bar</th></tr></thead>
+  <tbody>
+  {% set total = tally.values()|sum %}
+  {% for cid, count in tally.items() %}
+  {% set cand = candidates.get(cid) %}
+  <tr>
+    <td>{{ cand.symbol if cand else '?' }} {{ cand.name if cand else cid }}</td>
+    <td><strong>{{ count }}</strong></td>
+    <td>
+      <div class="vote-bar">
+        <div class="vote-bar-fill" style="width:{{ (count/total*100)|round(1) if total else 0 }}%"></div>
+        <span>{{ (count/total*100)|round(1) if total else 0 }}%</span>
+      </div>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<div class="audit-info">
+  <strong>Tally Hash:</strong> <code>{{ result.tally_hash }}</code><br>
+  <strong>Computed at:</strong> {{ result.computed_at | fmtdate }}<br>
+  <small>Totals derived from homomorphically aggregated encrypted votes + threshold decryption.</small>
+</div>
+{% else %}
+<p class="hint">Results not yet available.</p>
+{% endif %}
+<a href="/audit/{{ election.id }}" class="btn btn-outline">View Audit Trail</a>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}SecureVote Guardian — Home{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>🗳️ SecureVote Guardian</h1>
+  <p class="subtitle">Privacy-preserving online voting with Threshold Paillier Homomorphic Encryption and MPC.</p>
+  <div class="hero-stats">
+    <span>🟢 <strong>{{ active }}</strong> Active Elections</span>
+    <span>📊 <strong>{{ total }}</strong> Total Elections</span>
+  </div>
+  <div class="hero-btns">
+    <a href="/elections" class="btn">View Active Elections</a>
+    <a href="/about" class="btn btn-outline">How It Works</a>
+  </div>
+</section>
+
+<section class="features">
+  <h2>Key Features</h2>
+  <div class="card-grid">
+    <div class="card"><h3>🔒 End-to-End Privacy</h3><p>Votes are always encrypted. Only final tallies are revealed — never individual choices.</p></div>
+    <div class="card"><h3>🤝 Threshold Trust</h3><p>Private key is split across trustees. A quorum must cooperate to decrypt results.</p></div>
+    <div class="card"><h3>📋 Tamper-Evident Logs</h3><p>Every operation is hashed into an immutable audit log that anyone can verify.</p></div>
+    <div class="card"><h3>🔬 First-Principles Crypto</h3><p>Pure Python Paillier encryption — no third-party crypto libraries required.</p></div>
+  </div>
+</section>
+
+<section class="how-it-works" id="how">
+  <h2>How It Works</h2>
+  <div class="steps">
+    <div class="step"><span class="step-num">1</span><h3>Get Token</h3><p>Voter receives an eligibility token linked to an anonymous ID.</p></div>
+    <div class="step"><span class="step-num">2</span><h3>Encrypt Vote</h3><p>Browser encrypts your choice using Paillier homomorphic encryption.</p></div>
+    <div class="step"><span class="step-num">3</span><h3>Server Aggregates</h3><p>Server multiplies ciphertexts — computing the sum without seeing individual votes.</p></div>
+    <div class="step"><span class="step-num">4</span><h3>Trustees Decrypt</h3><p>Trustees jointly reconstruct the private key to reveal only the final tally.</p></div>
+  </div>
+</section>
+
+<section class="who">
+  <h2>Who Is It For?</h2>
+  <div class="card-grid">
+    <div class="card">🎓 <strong>College elections</strong> — student body, clubs, departments</div>
+    <div class="card">🏘️ <strong>Community groups</strong> — associations, cooperatives</div>
+    <div class="card">⚙️ <strong>Organizations</strong> — unions, boards, committees</div>
+  </div>
+</section>
+{% endblock %}

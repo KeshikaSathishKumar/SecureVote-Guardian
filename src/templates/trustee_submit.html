@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Submit Key Share — {{ election.name }}{% endblock %}
+{% block content %}
+<h1>⬆️ Submit Your Key Share</h1>
+<h2>{{ election.name }}</h2>
+
+{% if already %}
+  <div class="info-box">
+    ✅ You have already submitted your share for this election.
+    The admin can now compute the tally once enough trustees have submitted.
+  </div>
+  <a href="/trustee" class="btn btn-outline">← Back to Dashboard</a>
+{% else %}
+  <div class="info-box">
+    <strong>The election is closed and awaiting decryption.</strong><br>
+    By submitting your share, you allow the system to (partially) reconstruct
+    the private key. The tally can only be computed once
+    <strong>{{ election.threshold }}</strong> trustees have submitted.
+    <br><br>
+    Shares submitted so far: <strong>{{ total_submitted }} / {{ election.threshold }}</strong>
+  </div>
+
+  <div class="highlight-box">
+    <strong>Your Share (for your reference):</strong><br>
+    Share Index: <code>{{ share.share_x }}</code><br>
+    Share Value: <code style="word-break:break-all">{{ share.share_y_hex[:64] }}...</code>
+  </div>
+
+  <form method="post">
+    <p>By clicking the button below, your stored key share will be submitted to enable decryption.</p>
+    <button type="submit" class="btn btn-green">
+      ✅ Confirm — Submit My Key Share
+    </button>
+  </form>
+
+  <a href="/trustee" class="btn btn-outline" style="margin-top:1rem">Cancel</a>
+{% endif %}
+{% endblock %}
